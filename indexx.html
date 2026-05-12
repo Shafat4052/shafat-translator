@@ -29,36 +29,30 @@
             margin-top: 20px; font-size: 20px; color: #354F8E; font-weight: bold;
         }
         /* Mobile ke liye special settings */
-@media (max-width: 600px) {
-    .main-container {
-        width: 90% !important;
-        padding: 20px !important;
-    }
-
-    h1 {
-        font-size: 24px !important;
-    }
-
-    /* Dropdowns ko ek ke niche ek karne ke liye */
-    select {
-        width: 100% !important;
-        margin: 10px 0 !important;
-    }
-
-    .to-text {
-        display: block !important;
-        margin: 5px 0 !important;
-        font-weight: bold;
-    }
-
-    textarea {
-        width: 100% !important;
-    }
-
-    button {
-        width: 100% !important;
-    }
-}
+        @media (max-width: 600px) {
+            .main-container {
+                width: 90% !important;
+                padding: 20px !important;
+            }
+            h1 {
+                font-size: 24px !important;
+            }
+            select {
+                width: 100% !important;
+                margin: 10px 0 !important;
+            }
+            .to-text {
+                display: block !important;
+                margin: 5px 0 !important;
+                font-weight: bold;
+            }
+            textarea {
+                width: 100% !important;
+            }
+            button {
+                width: 100% !important;
+            }
+        }
     </style>
 </head>
 <body>
@@ -66,40 +60,37 @@
     <div class="main-container" style="text-align: center;">
         <h1>✨ Shafat's Translator ✨</h1>
         
-        <!-- Yahan Kashmiri (ks) Add Kiya Hai -->
         <div style="margin-top: 20px;">
             <select id="sourceLang" class="lang-select">
-                <option value="auto">Auto-Detect</option>
-                <option value="ks">Kashmiri</option>
+                <option value="auto">Auto-Detect</option> <!-- Ye wapas aa gaya! -->
                 <option value="en">English</option>
+                <option value="ks">Kashmiri</option>
                 <option value="hi">Hindi</option>
                 <option value="ur">Urdu</option>
                 <option value="ar">Arabic</option>
             </select>
-            <span style="font-weight: bold; color: #354F8E;">TO</span>
+            <span class="to-text" style="font-weight: bold; color: #354F8E;">TO</span>
             <select id="targetLang" class="lang-select">
-                <option value="fa">persian</option>
+                <option value="ur">Urdu</option>
+                <option value="fa">Persian</option>
                 <option value="en">English</option>
                 <option value="hi">Hindi</option>
-                <option value="ur">Urdu</option>
                 <option value="ar">Arabic</option>
                 <option value="fr">French</option>
                 <option value="es">Spanish</option>
-                <option value="ps">pashto</option>
-                <option value="pt">portuguese</option>
-                <option value="ru">russian</option>
-                <option value="tr">turkish</option>
-                <option value="ko">korean</option>
-                <option value="la">latin</option>
-                <option value="ar">Arabic</option>
-                <option value="fr">French</option>
-                <option value="ta">tamil</option>
-                <option value="uk">ukrainian</option>
-                <option value="ne">nepali</option>
-                <option value="kn">kannada</option>
-                <option value="ml">malayalam</option>
+                <option value="ps">Pashto</option>
+                <option value="pt">Portuguese</option>
+                <option value="ru">Russian</option>
+                <option value="tr">Turkish</option>
+                <option value="ko">Korean</option>
+                <option value="la">Latin</option>
+                <option value="ta">Tamil</option>
+                <option value="uk">Ukrainian</option>
+                <option value="ne">Nepali</option>
+                <option value="kn">Kannada</option>
+                <option value="ml">Malayalam</option>
                 <option value="ks">Kashmiri</option>
-                <option value="pa">punjabi</option>
+                <option value="pa">Punjabi</option>
             </select>
         </div>
         
@@ -117,19 +108,33 @@
             let sLang = document.getElementById("sourceLang").value;
             let tLang = document.getElementById("targetLang").value;
             
-            document.getElementById("result-box").innerText = "Translating...";
+            if (!typedText.trim()) {
+                document.getElementById("result-box").innerText = "Please type some text first!";
+                return;
+            }
+
+            document.getElementById("result-box").innerText = "Translating... Please wait ⏳";
             
-            fetch('/translate', {
-                method: 'POST',
-                headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({ text: typedText, source: sLang, target: tLang })
-            })
+            // Google Translate API ka free version (Auto-detect ke sath badiya chalta hai)
+            let apiUrl = `https://translate.googleapis.com/translate_a/single?client=gtx&sl=${sLang}&tl=${tLang}&dt=t&q=${encodeURIComponent(typedText)}`;
+
+            fetch(apiUrl)
             .then(response => response.json())
             .then(data => {
-                document.getElementById("result-box").innerText = data.translated_text;
+                let translatedText = "";
+                // Google ka data thoda andar hota hai, usko nikalne ke liye:
+                if (data && data[0]) {
+                    data[0].forEach(item => {
+                        if (item[0]) translatedText += item[0];
+                    });
+                    document.getElementById("result-box").innerText = translatedText;
+                } else {
+                    document.getElementById("result-box").innerText = "Translation failed! Try again.";
+                }
             })
             .catch(error => {
-                document.getElementById("result-box").innerText = "Translation failed!";
+                document.getElementById("result-box").innerText = "Network Error! Check your internet.";
+                console.error("Error details:", error);
             });
         }
     </script>
