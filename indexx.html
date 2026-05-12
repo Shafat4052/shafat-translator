@@ -29,29 +29,27 @@
         #result-box {
             margin-top: 20px; font-size: 20px; color: #354F8E; font-weight: bold;
         }
+        /* Mobile ke liye special settings */
 @media (max-width: 600px) {
-    /* Container ko mobile screen ke hisaab se set karne ke liye */
     .main-container {
-        width: 95% !important;
+        width: 90% !important;
         padding: 20px !important;
     }
 
-    /* Elements ko ek ke niche ek lane ke liye */
-    .main-container div {
-        display: flex !important;
-        flex-direction: column !important;
-        align-items: center !important;
+    h1 {
+        font-size: 24px !important;
     }
 
-    .lang-select {
+    /* Dropdowns ko ek ke niche ek karne ke liye */
+    select {
         width: 100% !important;
-        max-width: 280px !important;
         margin: 10px 0 !important;
     }
 
     .to-text {
-        margin: 5px 0 !important;
         display: block !important;
+        margin: 5px 0 !important;
+        font-weight: bold;
     }
 
     textarea {
@@ -60,7 +58,6 @@
 
     button {
         width: 100% !important;
-        max-width: 280px !important;
     }
 }
     </style>
