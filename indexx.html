@@ -6,6 +6,7 @@
     <title>Translator Project</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
     <style>
+    
         body { background-color: #EFF5F9; font-family: sans-serif; }
         .main-container {
             background-color: #FFFFFF; max-width: 600px; margin: 50px auto; padding: 40px;
@@ -29,15 +30,10 @@
         #result-box {
             margin-top: 20px; font-size: 20px; color: #354F8E; font-weight: bold;
         }
-@media (max-width: 600px) {
-    /* Container ko mobile screen ke hisaab se set karne ke liye */
-    .main-container {
-        width: 95% !important;
-        padding: 20px !important;
-    }
 
-    /* Elements ko ek ke niche ek lane ke liye */
-    .main-container div {
+@media (max-width: 600px) {
+    /* Isse dropdowns aur 'TO' ek ke niche ek aayenge */
+    .controls-wrapper {
         display: flex !important;
         flex-direction: column !important;
         align-items: center !important;
@@ -45,22 +41,25 @@
 
     .lang-select {
         width: 100% !important;
-        max-width: 280px !important;
+        max-width: 300px !important;
         margin: 10px 0 !important;
     }
 
-    .to-text {
+    /* 'TO' text ke liye spacing */
+    .controls-wrapper span {
         margin: 5px 0 !important;
         display: block !important;
     }
 
-    textarea {
-        width: 100% !important;
+    /* Card aur baki cheezein mobile ke liye */
+    .main-container {
+        width: 95% !important;
+        padding: 20px !important;
     }
 
-    button {
+    textarea, button {
         width: 100% !important;
-        max-width: 280px !important;
+        max-width: 300px !important;
     }
 }
     </style>
@@ -71,7 +70,7 @@
         <h1><i class="fas fa-language"></i> Shafat's Translator</h1>
         
         <!-- Yahan Kashmiri (ks) Add Kiya Hai -->
-        <div style="margin-top: 20px;">
+       <div class="controls-wrapper" style="margin-top: 20px;">
             <select id="sourceLang" class="lang-select">
                 <option value="auto">Auto-Detect</option>
                 <option value="ks">Kashmiri</option>
