@@ -98,6 +98,9 @@
         
         <br><br>
         <button class="btn-custom" onclick="doTranslation()">Translate Now</button>
+        <!-- Naye Voice aur Speaker Buttons -->
+<button class="btn-custom" onclick="startDictation()" style="background-color: #ff9800; margin: 10px 5px;">🎤 Speak To Type</button>
+<button class="btn-custom" onclick="speakText()" style="background-color: #4CAF50; margin: 10px 5px;">🔊 Listen Translation</button>
 
         <div id="result-box"></div>
     </div>
@@ -136,6 +139,45 @@
                 document.getElementById("result-box").innerText = "Network Error! Check your internet.";
                 console.error("Error details:", error);
             });
+        }
+        // --- NAYA CODE: Mike Wala Feature (Speech to Text) ---
+        function startDictation() {
+            if (window.hasOwnProperty('webkitSpeechRecognition')) {
+                var recognition = new webkitSpeechRecognition();
+                recognition.continuous = false;
+                recognition.interimResults = false;
+                recognition.lang = "en-IN"; // English/Hindi mix ke liye best
+                recognition.start();
+
+                document.getElementById('myInput').placeholder = "Sun raha hoon... Boliye!";
+
+                recognition.onresult = function(e) {
+                    document.getElementById('myInput').value = e.results[0][0].transcript;
+                    document.getElementById('myInput').placeholder = "Type your text here...";
+                    recognition.stop();
+                };
+                recognition.onerror = function(e) {
+                    alert("Mike ne theek se suna nahi. Padhne ke liye shor na ho.");
+                    document.getElementById('myInput').placeholder = "Type your text here...";
+                    recognition.stop();
+                }
+            } else {
+                alert("Aapka browser Mike support nahi karta. Chrome use karein.");
+            }
+        }
+
+        // --- NAYA CODE: Speaker Wala Feature (Text to Speech) ---
+        function speakText() {
+            var text = document.getElementById('result-box').innerText; 
+            var tLang = document.getElementById("targetLang").value;
+            
+            if(text !== "" && !text.includes("Translating...") && !text.includes("Please type")) {
+                var msg = new SpeechSynthesisUtterance(text);
+                msg.lang = tLang; // Jis language me translate hua hai, usme bolega
+                window.speechSynthesis.speak(msg);
+            } else {
+                alert("Bhai, pehle kuch translate toh karo!");
+            }
         }
     </script>
 </body>
